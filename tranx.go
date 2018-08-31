@@ -69,9 +69,6 @@ func (r *Reader) ReadNoise() (noise uint16, err error) {
 	return UnmarshalNoise(msg)
 }
 
-// MessageLenghtError is returned when message byte slice is not what Unmarshal functions are expecting.
-var MessageLenghtError = errors.New("invalid message lenght")
-
 type UnmarshalError struct {
 	Msg    []byte
 	Detail string

@@ -32,9 +32,30 @@ func main() {
 }
 ```
 
-### Example Writer
+### Example Client
 
 ```go
+package main
+
+import (
+	"log"
+
+	"github.com/bitbrewers/tranx2"
+)
+
+type Handler struct{}
+
+func (h *Handler) OnPassing(rec tranx2.Passing) { log.Println(rec) }
+func (h *Handler) OnNoise(noise uint16)         { log.Println(noise) }
+func (h *Handler) OnError(err error)            { log.Println(err) }
+
+func main() {
+	c := tranx2.NewClient("/dev/USBtty0", &Handler{})
+	log.Fatal(c.Listen())
+}
+
+```
+
 package main
 
 import (
