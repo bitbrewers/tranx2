@@ -3,4 +3,13 @@ language: go
 go:
   - "1.10.x"
 
-script: go test -v -cover -race ./...
+# Build branches only when merging to master
+branches:
+  only:
+    - master
+
+script:
+  - go test -v -coverprofile=coverage.txt -covermode=atomic -race ./...
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

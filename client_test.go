@@ -21,7 +21,7 @@ type StringRC struct {
 func (s *StringRC) Close() error { return nil }
 
 func TestNewClient(t *testing.T) {
-	const input = "#0970\r\n$09000235BF3436E021358700\r\n$09000235BF3436\r\n"
+	const input = "#0970\r\n$09000235BF3436E021358700\r\n\r\n$09000235BF3436\r\n#097j\r\n"
 	expected := []interface{}{
 		uint16(2416),
 		Passing{TransponderID: 144831, PassingTicks: 876011553, Hits: 53, Strength: 135, Prefix: 2304, Trailing: 0},
@@ -29,10 +29,8 @@ func TestNewClient(t *testing.T) {
 	src := &StringRC{strings.NewReader(input)}
 	h := make(TestHandler)
 
-	c := &Client{
-		Handler: h,
-		Conn:    src,
-	}
+	c := NewClient("dummy/port", h)
+	c.Conn = src
 
 	done := make(chan struct{})
 	go func() {
@@ -40,10 +38,12 @@ func TestNewClient(t *testing.T) {
 			assert.Equal(t, v, <-h)
 		}
 		assert.Error(t, (<-h).(error))
+		assert.Error(t, (<-h).(error))
 		done <- struct{}{}
 	}()
 
 	err := c.Serve()
 	assert.Equal(t, io.EOF, err)
+	c.Close()
 	<-done
 }

@@ -49,7 +49,7 @@ func TestNewReaderNoise(t *testing.T) {
 	require.Equal(t, expected, got)
 }
 
-func TestNewReaderErrors(t *testing.T) {
+func TestNewReaderPassingErrors(t *testing.T) {
 	testCases := []struct {
 		name string
 		data string
@@ -67,6 +67,24 @@ func TestNewReaderErrors(t *testing.T) {
 	for _, tc := range testCases {
 		buf.WriteString(tc.data)
 		_, err := r.ReadPassing()
+		err.Error()
+		assert.Error(t, err, "did not receive "+tc.name+" error")
+	}
+}
+
+func TestNewReaderNoiseErrors(t *testing.T) {
+	testCases := []struct {
+		name string
+		data string
+	}{
+		{name: "invalid lenght", data: "#090\r\n"},
+		{name: "invalid hex character", data: "#097J\r\n"},
+	}
+	buf := &bytes.Buffer{}
+	r := NewReader(buf)
+	for _, tc := range testCases {
+		buf.WriteString(tc.data)
+		_, err := r.ReadNoise()
 		assert.Error(t, err, "did not receive "+tc.name+" error")
 	}
 }
