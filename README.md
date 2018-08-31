@@ -1,5 +1,9 @@
 # AMB TranX-2 golang implementation
 
+[![Build Status](https://travis-ci.com/bitbrewers/tranx2.svg?branch=master)](https://travis-ci.com/bitbrewers/tranx2)
+[![GoDoc](https://godoc.org/github.com/bitbrewers/tranx2?status.svg)](https://godoc.org/github.com/bitbrewers/tranx2)
+[![Code Coverage](https://img.shields.io/codecov/c/bitbrewers/tranx2/master.svg)](https://codecov.io/github/bitbrewers/tranx2?branch=master)
+
 This package provides Marshal and Unmarshal functionalities for TranX-2 encoded data and some tools for debugging and testing AMB TranX-2 decoder devices and software.
 
 ### Tools
